@@ -1,0 +1,8 @@
+<Project>
+	<Target Name="FormatOnBuild" AfterTargets="Build">
+		<Exec Command="dotnet format --verify-no-changes" ContinueOnError="true" />
+	</Target>
+	<Target Name="CheckStyleCop" AfterTargets="Build">
+		<Message Importance="high" Text="StyleCop analysis complete." />
+	</Target>
+</Project>

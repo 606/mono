@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ItemGroup>
+    <PackageVersion Include="Amazon.Lambda.Core" Version="2.3.0" />
+    <PackageVersion Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.0" />
+    <PackageVersion Include="AWSSDK.EC2" Version="3.7.401" />
+    <PackageVersion Include="AWSSDK.ElasticLoadBalancing" Version="3.7.401" />
+    <PackageVersion Include="AWSSDK.ElasticLoadBalancingV2" Version="3.7.401" />
+    <PackageVersion Include="AWSSDK.CloudWatchLogs" Version="3.7.401" />
+  </ItemGroup>
+</Project>
