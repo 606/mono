@@ -28,7 +28,7 @@ public sealed class Function
     }
 
     // Entry point
-#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0060 // Remove unused parameter exclusion
     public async Task Handler(object? input, ILambdaContext context)
 #pragma warning restore IDE0060
     {
