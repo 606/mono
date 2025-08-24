@@ -84,6 +84,39 @@ nunit-*.xml
 .vscode/
 history/
 
+# AWS CLI & credentials
+.aws/
+*.pem
+*.key
+*.crt
+*.env
+.env.*
+aws-exports.js
+
+# Lambda/CDK artifacts
+cdk.out/
+.cdk.staging/
+*.template.json
+*.template.yaml
+*.zip
+
+# Local test/output files
+out.json
+
+# Screenshots, cloud sync, and OS cloud storage
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.heic
+*.webp
+CloudStorage/
+OneDrive*/
+Google Drive*/
+Dropbox*/
+
 # macOS
 .DS_Store
 .AppleDouble
