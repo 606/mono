@@ -1,0 +1,50 @@
+# GitHub Actions workflow for deploying CostGuardLambda-dev to AWS Lambda
+
+name: Deploy CostGuardLambda-dev
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - feature/init
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Publish Lambda
+        run: dotnet publish stacks/Cost/src/Se.Aws.Cost.Guard.Lambda/Se.Aws.Cost.Guard.Lambda.csproj -c Release -o publish
+      - name: Zip Lambda
+        run: cd publish && zip -r ../lambda.zip .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda
+          path: lambda.zip
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lambda
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Deploy Lambda
+        run: aws lambda update-function-code --function-name CostGuardLambda-dev --zip-file fileb://lambda.zip
