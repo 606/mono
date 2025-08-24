@@ -1,14 +1,13 @@
 # GitHub Actions workflow for deploying CostGuardLambda-dev to AWS Lambda
 
-name: Deploy CostGuardLambda-dev
-
+name: deploy-aws-costguardlambda-dev
 on:
   push:
     branches:
       - main
       - master
       - feature/init
-
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,6 +33,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: dev
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - name: Download artifact
