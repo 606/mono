@@ -1,11 +1,6 @@
 name: Release Se.Cli (Simple)
 
 on:
-  push:
-    branches:
-      - feature/init
-    paths:
-      - '.github/workflows/release-se-cli-simple.yml'
   workflow_dispatch:
     inputs:
       version:
@@ -18,18 +13,10 @@ on:
         default: 'feature/init'
 
 jobs:
-  test-workflow:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    steps:
-      - name: Test workflow
-        run: echo "Se.Cli release workflow is active and ready for manual execution"
-
   build-and-release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
