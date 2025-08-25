@@ -1,0 +1,97 @@
+name: Release Se.Cli
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'stacks/Tools/src/Se.Cli/**'
+      - 'libs/Se.Common/**'
+      - '.github/workflows/release-se-cli.yml'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        default: ''
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build Se.Cli
+        run: dotnet build stacks/Tools/src/Se.Cli/Se.Cli.csproj -c Release
+
+      - name: Test Se.Cli
+        run: dotnet test stacks/Tools/src/Se.Cli/Se.Cli.csproj --no-build
+
+      - name: Publish Se.Cli
+        run: dotnet publish stacks/Tools/src/Se.Cli/Se.Cli.csproj -c Release -o publish/se-cli
+
+      - name: Create release archive
+        run: |
+          cd publish
+          tar -czf se-cli.tar.gz se-cli/
+          zip -r se-cli.zip se-cli/
+
+      - name: Get version from project
+        id: get_version
+        run: |
+          VERSION=$(dotnet list stacks/Tools/src/Se.Cli/Se.Cli.csproj package | grep -E "^\s*[0-9]+\.[0-9]+\.[0-9]+" | head -1 | awk '{print $2}')
+          if [ -z "$VERSION" ]; then
+            VERSION=$(date +%Y.%m.%d)
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: se-cli-v${{ steps.get_version.outputs.version }}
+          release_name: Se.Cli v${{ steps.get_version.outputs.version }}
+          body: |
+            ## Se.Cli v${{ steps.get_version.outputs.version }}
+            
+            ### Changes
+            - Built from commit: ${{ github.sha }}
+            - Branch: ${{ github.ref_name }}
+            
+            ### Downloads
+            - [se-cli.tar.gz](https://github.com/${{ github.repository }}/releases/download/se-cli-v${{ steps.get_version.outputs.version }}/se-cli.tar.gz)
+            - [se-cli.zip](https://github.com/${{ github.repository }}/releases/download/se-cli-v${{ steps.get_version.outputs.version }}/se-cli.zip)
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./publish/se-cli.tar.gz
+          asset_name: se-cli.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload Release Assets (ZIP)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./publish/se-cli.zip
+          asset_name: se-cli.zip
+          asset_content_type: application/zip

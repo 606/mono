@@ -13,7 +13,7 @@ internal static class CliInstaller
 
     internal static void Install(string osId)
     {
-        const string ExeName = "se";
+        const string ExeName = "se-cli";
         var rid = GetRidForOs(osId);
         if (string.IsNullOrEmpty(rid))
         {
@@ -126,7 +126,7 @@ internal static class CliInstaller
             targetDir = "/opt/homebrew/bin";
         }
 
-        var targetPath = Path.Combine(targetDir, "se");
+        var targetPath = Path.Combine(targetDir, "se-cli");
         var aliasPath = Path.Combine(targetDir, "ss");
         try
         {
