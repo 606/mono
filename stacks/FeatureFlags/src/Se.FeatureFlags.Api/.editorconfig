@@ -1,0 +1,17 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+# Disable conflicting StyleCop rules
+dotnet_diagnostic.SA1010.severity = none
+dotnet_diagnostic.SA1003.severity = none
+dotnet_diagnostic.IDE0028.severity = none
+dotnet_diagnostic.IDE0090.severity = none
+
+# Disable whitespace warnings
+dotnet_diagnostic.WHITESPACE.severity = none

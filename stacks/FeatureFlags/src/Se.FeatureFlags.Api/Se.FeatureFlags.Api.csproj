@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>66445591-2bed-437c-a693-a55791da0de9</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <SkipFormatOnBuild>true</SkipFormatOnBuild>
+    <AnalysisLevel>none</AnalysisLevel>
+    <AnalysisMode>none</AnalysisMode>
+  </PropertyGroup>
+
+  <Target Name="DisableFormatOnBuild" BeforeTargets="FormatOnBuild">
+    <PropertyGroup>
+      <FormatOnBuild>false</FormatOnBuild>
+    </PropertyGroup>
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Remove="StyleCop.Analyzers" />
+  </ItemGroup>
+
+</Project>

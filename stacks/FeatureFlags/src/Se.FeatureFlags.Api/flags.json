@@ -1,0 +1,35 @@
+[
+  {
+    "App": "test-app",
+    "Key": "feature_new_ui",
+    "Env": "development",
+    "Enabled": true,
+    "Value": {
+      "theme": "dark",
+      "layout": "modern"
+    },
+    "Version": 1,
+    "UpdatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "App": "test-app",
+    "Key": "feature_analytics",
+    "Env": "production",
+    "Enabled": false,
+    "Value": null,
+    "Version": 1,
+    "UpdatedAt": "2024-01-01T00:00:00Z"
+  },
+  {
+    "App": "demo-app",
+    "Key": "feature_beta",
+    "Env": null,
+    "Enabled": true,
+    "Value": {
+      "beta_enabled": true,
+      "max_users": 1000
+    },
+    "Version": 2,
+    "UpdatedAt": "2024-01-02T12:00:00Z"
+  }
+]
